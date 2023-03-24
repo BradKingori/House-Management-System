@@ -1,4 +1,4 @@
-CREATE TABLE appartment (
+CREATE TABLE apartment (
     apt_no varchar(50),
     apt_type varchar(50),
     rent int(50),
@@ -7,6 +7,12 @@ CREATE TABLE appartment (
 );
 
 
+CREATE TABLE management (
+    mgt_id varchar(50),
+    mgt_username varchar(50),
+    mgt_password varchar(50),
+    PRIMARY KEY (mgt_id)
+);
 
 CREATE TABLE tenant (
 	t_id varchar(50),
