@@ -1,0 +1,37 @@
+CREATE TABLE tenant (
+	t_id varchar(50),
+    t_password varchar(50),
+    t_name varchar(50),
+    t_phone varchar(50),
+    t_national_id varchar(50),
+    t_lease_length int(50),
+    apt_no varchar(50),
+    apt_type varchar(50),
+    t_arrear varchar(50),
+    rent int(50),
+    PRIMARY KEY (t_id),
+    FOREIGN KEY (apt_no) REFERENCES apartments(apt_no)
+);
+
+
+CREATE TABLE rent (
+	r_date date,
+    t_id varchar(50),
+    apt_no varchar(50),
+    r_payment_method varchar(50),
+    t_arrear varchar(50),
+    rent int(50),
+    PRIMARY KEY (r_date),
+    FOREIGN KEY (t_id) REFERENCES tenant(t_id)
+);
+
+CREATE TABLE complaints (
+	c_no varchar(50),
+    apt_no varchar(50),
+    t_id varchar(50),
+    c_type varchar(50),
+    c_text varchar(250),
+    c_status varchar(50),
+    PRIMARY KEY (c_no),
+    FOREIGN KEY (t_id) REFERENCES tenant(t_id)
+);
