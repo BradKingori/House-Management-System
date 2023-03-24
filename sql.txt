@@ -1,3 +1,13 @@
+CREATE TABLE appartment (
+    apt_no varchar(50),
+    apt_type varchar(50),
+    rent int(50),
+    occupied varchar(50),
+    PRIMARY KEY (apt_no)
+);
+
+
+
 CREATE TABLE tenant (
 	t_id varchar(50),
     t_password varchar(50),
