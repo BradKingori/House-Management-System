@@ -111,7 +111,7 @@ public class AddTenant extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(102, 255, 102));
 
-        jTabbedPane2.setBackground(new java.awt.Color(255, 255, 0));
+        jTabbedPane2.setBackground(new java.awt.Color(0, 153, 153));
 
         jPanel4.setBackground(new java.awt.Color(51, 255, 255));
 
@@ -524,9 +524,7 @@ public class AddTenant extends javax.swing.JFrame {
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGap(17, 17, 17)
                         .addComponent(jLabel20))
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel22)
@@ -539,7 +537,7 @@ public class AddTenant extends javax.swing.JFrame {
                 .addComponent(jRadioButton5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jRadioButton6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
                 .addComponent(jButton3)
                 .addGap(82, 82, 82))
         );
