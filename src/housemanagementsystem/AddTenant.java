@@ -1,6 +1,6 @@
 package housemanagementsystem;
 
-import java.awt.List;
+
 import java.sql.*;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -20,7 +20,6 @@ public class AddTenant extends javax.swing.JFrame {
     Connection cn;
     PreparedStatement pst;
     ResultSet rs;
-    String[] itemArray ;
     String status ="";
     
     
@@ -68,7 +67,9 @@ public class AddTenant extends javax.swing.JFrame {
         BtnCheck4Apts = new javax.swing.JButton();
         txtTenantRent = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTableApt = new javax.swing.JTable();
+        txtTenantApartment = new javax.swing.JTextField();
+        jLabel24 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         txtTenantNo1 = new javax.swing.JTextField();
@@ -118,6 +119,7 @@ public class AddTenant extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jTabbedPane1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.LEFT);
 
         jPanel2.setBackground(new java.awt.Color(102, 255, 102));
@@ -187,7 +189,7 @@ public class AddTenant extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTableApt.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -198,54 +200,68 @@ public class AddTenant extends javax.swing.JFrame {
                 "APT NUMBER", "APT TYPE", "RENT", "OCCUPIED"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jTableApt.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableAptMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTableApt);
+
+        txtTenantApartment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTenantApartmentActionPerformed(evt);
+            }
+        });
+
+        jLabel24.setFont(new java.awt.Font("Montserrat", 0, 15)); // NOI18N
+        jLabel24.setText("Apartment");
 
         javax.swing.GroupLayout apttableLayout = new javax.swing.GroupLayout(apttable);
         apttable.setLayout(apttableLayout);
         apttableLayout.setHorizontalGroup(
             apttableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(apttableLayout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addGap(52, 52, 52)
                 .addGroup(apttableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(apttableLayout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addGroup(apttableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel2))
-                        .addGap(18, 18, 18)
-                        .addGroup(apttableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(apttableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtTPhone)
-                                .addComponent(txtTenantName)
-                                .addComponent(txtTenantNo, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtNatID, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(apttableLayout.createSequentialGroup()
-                        .addGroup(apttableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(apttableLayout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(jLabel5))
-                            .addGroup(apttableLayout.createSequentialGroup()
-                                .addGap(34, 34, 34)
-                                .addComponent(jLabel7)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(apttableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtLeaseLength, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtTenantRent, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(apttableLayout.createSequentialGroup()
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel24))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(apttableLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(apttableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(SubmitTenantInfo)
+                    .addGroup(apttableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(apttableLayout.createSequentialGroup()
+                            .addGap(12, 12, 12)
+                            .addGroup(apttableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel3)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel2))
+                            .addGap(18, 18, 18)
+                            .addGroup(apttableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(apttableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtTPhone)
+                                    .addComponent(txtTenantName)
+                                    .addComponent(txtTenantNo, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtNatID, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(apttableLayout.createSequentialGroup()
+                            .addGap(12, 12, 12)
+                            .addComponent(jLabel5)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(apttableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtTenantApartment, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtLeaseLength, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
+                                .addComponent(txtTenantRent, javax.swing.GroupLayout.Alignment.LEADING)))
+                        .addComponent(jLabel6)
                         .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTenantAptType, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(apttableLayout.createSequentialGroup()
-                        .addGap(98, 98, 98)
-                        .addComponent(SubmitTenantInfo))
-                    .addComponent(jLabel6))
-                .addGap(18, 18, 18)
+                        .addComponent(txtTenantAptType, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(19, 19, 19)
                 .addGroup(apttableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, apttableLayout.createSequentialGroup()
                         .addComponent(BtnCheck4Apts)
-                        .addGap(224, 224, 224))))
+                        .addGap(224, 224, 224)))
+                .addGap(0, 26, Short.MAX_VALUE))
         );
         apttableLayout.setVerticalGroup(
             apttableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -275,16 +291,20 @@ public class AddTenant extends javax.swing.JFrame {
                             .addComponent(jLabel5))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(apttableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtTenantRent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7)))
+                            .addComponent(txtTenantApartment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel24)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addGroup(apttableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtTenantRent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(apttableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(txtTenantAptType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                .addGap(45, 45, 45)
                 .addComponent(SubmitTenantInfo)
-                .addGap(54, 54, 54))
+                .addGap(36, 36, 36))
         );
 
         jTabbedPane2.addTab("Add Tenant", apttable);
@@ -681,7 +701,7 @@ public class AddTenant extends javax.swing.JFrame {
 
     private void BtnCheck4AptsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCheck4AptsActionPerformed
         // TODO add your handling code here:
-        checkandpoulatebox();
+        displayallrecords();
          
     }//GEN-LAST:event_BtnCheck4AptsActionPerformed
 
@@ -692,6 +712,15 @@ public class AddTenant extends javax.swing.JFrame {
     private void txtTenantAptTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTenantAptTypeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTenantAptTypeActionPerformed
+
+    private void txtTenantApartmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTenantApartmentActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTenantApartmentActionPerformed
+
+    private void jTableAptMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableAptMouseClicked
+        // TODO add your handling code here:
+        gettabledetails();
+    }//GEN-LAST:event_jTableAptMouseClicked
 
     /**
      * @param args the command line arguments
@@ -760,6 +789,7 @@ public class AddTenant extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -784,7 +814,7 @@ public class AddTenant extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTableApt;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
@@ -799,6 +829,7 @@ public class AddTenant extends javax.swing.JFrame {
     private javax.swing.JTextField txtName7;
     private javax.swing.JTextField txtNatID;
     private javax.swing.JTextField txtTPhone;
+    private javax.swing.JTextField txtTenantApartment;
     private javax.swing.JTextField txtTenantAptType;
     private javax.swing.JTextField txtTenantName;
     private javax.swing.JTextField txtTenantNo;
@@ -853,43 +884,52 @@ public class AddTenant extends javax.swing.JFrame {
 
     private void SubmitTenantInfo() {
    try{
-       
+          cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartmentmanager","root",null);
     //select  = cn.prepareStatement("SELECT * FROM `apartment` WHERE occupied = 'Not Occupied';");
-    pst = cn.prepareStatement("insert into tenant(t_id,t_name,t_phone, t_national_id,t_lease_length) values (?,?,?,?,?)");
-      
+    pst = cn.prepareStatement("insert into tenant(t_id,t_name,t_phone, t_national_id,t_lease_length,t_password,apt_no) values (?,?,?,?,?,?,?)");
+      String pwd = "1234";
     pst.setString(1,txtTenantNo.getText());
   //  pst.setString(2,"1234");
     pst.setString(2,txtTenantName.getText());
     pst.setString(3,   txtTPhone.getText());
     pst.setString(4,   txtNatID.getText());
-   // pst.setInt( 6,   Integer.parseInt(txtLeaseLength.getText().toString()));
-  //  String selectedAptNo = TenantAptNoComboBox.getSelectedItem().toString();
- //   pst.setString(7,selectedAptNo);
- //   String selectedAptType =TenantAptTypeCombobox.getSelectedItem().toString();
- //   pst.setString(8, selectedAptType); 
-  //  pst.setString(9,   txtTenantRent.getText());
- //   pst.setInt( 10,   Integer.parseInt(txtTenantRent.getText()));
-   pst.setInt( 5,   Integer.parseInt(txtLeaseLength.getText()));
+    
+    pst.setInt( 5,   Integer.parseInt(txtLeaseLength.getText()));
+    pst.setString(6,   pwd);
+    
+    String as = txtTenantApartment.getText();
+    pst.setString(7,   as);
+  //  pst.setString(8,   txtTenantAptType.getText());
+ //   pst.setString(9,   txtTenantRent.getText());
+ //   pst.setString(10,   txtTenantRent.getText());
    
-//   String nameToUpdate = (String) TenantComboBox.getSelectedItem();
-  // int newAge = Integer.parseInt(jTextField.getText());
-
-            // Create an SQL update statement
-   String sql = "UPDATE apartment SET occupied = 'Occupied' WHERE apt_no = ?   ";
-            // Prepare the statement with the update parameters
-            PreparedStatement pstmt = cn.prepareStatement(sql);
-       //     pstmt.setString(1, nameToUpdate);
+    SubmitTenantInfo2();
+    pst.execute();
+    
   
+    JOptionPane.showMessageDialog(null, "Tenant Successfully Added");
+    
    
- //   rs = pst.executeQuery();
- 
- 
-   //         PreparedStatement pstmt = cn.prepareStatement("UPDATE apartment SET occupied = ? WHERE  apt_no = ?");
-     /////        pstmt.setBigDecimal(1, 153833.00)
-   //          pstmt.setInt(2, 110592)
+    
+    }catch(Exception e){
+          e.printStackTrace();
+    }
+    }
+    
+       private void SubmitTenantInfo2() {
+   try{
+          cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartmentmanager","root",null);
+    //select  = cn.prepareStatement("SELECT * FROM `apartment` WHERE occupied = 'Not Occupied';");
+    
+          String sql = "UPDATE apartment SET occupied = ? WHERE apt_no = ?  ";
+         
+          String va = txtTenantApartment.getText();
+            // Prepare the statement with the update parameters
+          PreparedStatement pstmt = cn.prepareStatement(sql);
+          pstmt.setString(1,   "Occupied");
+          pstmt.setString(2,   va);
           int rowsAffected = pstmt.executeUpdate();
 
-            // Check if the update was successful
             if (rowsAffected > 0) {
                 JOptionPane.showMessageDialog(null, "Record updated successfully.");
                 clear();
@@ -898,15 +938,24 @@ public class AddTenant extends javax.swing.JFrame {
             }
  
  
-    pst.executeUpdate();
-   // pst.close();
-    JOptionPane.showMessageDialog(null, "Tenant Successfully Added");
-    
+    pst.execute();
+       JOptionPane.showMessageDialog(null, "Tenant Successfully Added");
+    pst.close();
    
     
     }catch(Exception e){
           e.printStackTrace();
     }
+    }
+    
+    
+    private void gettabledetails(){
+     DefaultTableModel model = (DefaultTableModel) jTableApt.getModel();
+    
+    int n = jTableApt.getSelectedRow();
+    txtTenantApartment.setText(model.getValueAt(n ,0).toString());
+    txtTenantRent.setText(model.getValueAt(n ,1).toString());
+    txtTenantAptType.setText(model.getValueAt(n ,2).toString());
     }
  
     
@@ -938,13 +987,13 @@ public class AddTenant extends javax.swing.JFrame {
 
     private void checkandpoulatebox() {
        
-   
+    
         
     // String tmp = (String)TenantAptNoComboBox.getSelectedItem();
         String sql = "SELECT * FROM apartment WHERE occupied = 'Not Occupied'";
         try
         {
-             pst  = cn.prepareStatement(sql);           
+             pst  = cn.prepareStatement(sql,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);           
           //   pst.setString(1,tmp);
              rs = pst.executeQuery();
             
@@ -955,20 +1004,19 @@ public class AddTenant extends javax.swing.JFrame {
     
     }
     
-    
-    private void displayallrecords() {
+ private void displayallrecords() {
         //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-  /*  try {
-        myconnection();
-        //DefaultTableModel model = (DefaultTableModel) ();
+    try {
+        checkandpoulatebox();
+        DefaultTableModel model = (DefaultTableModel) jTableApt.getModel();
     
-      //  if(model.getRowCount() > 0){
-       //     model.setRowCount(0);
+        if(model.getRowCount() > 0){
+            model.setRowCount(0);
         }
-      //  else{
-      //  while(rs.next())
+        else{
+        while(rs.next())
                 {
-                    String mydata[] = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5)};
+                    String mydata[] = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4)};
                     model.addRow(mydata);
                 }
         
@@ -979,6 +1027,5 @@ public class AddTenant extends javax.swing.JFrame {
             e.printStackTrace();
         }
     
-    }*/
-}
+    }
 }
