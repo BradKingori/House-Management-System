@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
+package housemanagementsystem;
+
 /**
  *
  * @author ADMIN
@@ -14,6 +16,11 @@ public class Home extends javax.swing.JFrame {
      */
     public Home() {
         initComponents();
+        ModernTheme.style(getContentPane());
+        setTitle("House Management System");
+        setSize(460, 380);
+        setLocationRelativeTo(null);
+        setResizable(false);
     }
 
     /**
