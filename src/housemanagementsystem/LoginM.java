@@ -1,24 +1,16 @@
 
-import housemanagementsystem.AddTenant;
-import java.sql.DriverManager;
-import javax.swing.JOptionPane;
+package housemanagementsystem;
 
-import java.awt.List;
-import java.sql.*;
-import java.util.ArrayList;
-import javax.swing.JOptionPane;
 import java.sql.Connection;
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author ADMIN
  */
-
-
 public class LoginM extends javax.swing.JFrame {
 
     /**
