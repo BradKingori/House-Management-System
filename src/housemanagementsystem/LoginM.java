@@ -183,83 +183,58 @@ public class LoginM extends javax.swing.JFrame {
     private javax.swing.JTextField txtusername;
     // End of variables declaration//GEN-END:variables
 
-    private void myconnection() {
-        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    
-            try{
-                cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartmentmanager","root",null);
-                
-        
-                JOptionPane.showMessageDialog(null, "Successfully Connected");
-                
-            //    queryForApartments();
-            }
-            catch(Exception e){
-                e.printStackTrace();
-            }
-    
-    }
-    
-    
-    
-    private void login() {
-       
-    try{
-    pst = cn.prepareStatement ("select mgt_username, mgt_password from management"); //selecting specific user from database
-     rs = pst.executeQuery();
-     while (rs.next()){
-    String userna = new String(txtusername.getText());
-    String passwd = txtmpwd.getText();
-    
-    
-    
-        String user, pass;
-        user = rs.getString("mgt_username");
-        pass = rs.getString("mgt_password");
-        passwo = pass;
-
-        if ((passwd.equals(pass)) && (userna.equals(user))){
-                flag = true;
-                JOptionPane.showMessageDialog(null, "LOGIN Successful"); 
-                new AddTenant().setVisible(true);
-            }
-        
-        if(!flag)          
-            JOptionPane.showMessageDialog(null, "Wrong username or password. Please try again"); 
-        rs.close();  
-        
-        
-       }
-    }
-
-    catch(Exception e){
-        System.out.println(e);
-    } 
-     clearrecords();
-   //include code to take me to new tab, ie. home
-}
-
-
-private void clearrecords() {
-      
-       
-       txtusername.setText(null);
-       txtmpwd.setText(null);
-    }
-
-    public String getusername() {
-        if (flag == true){
-            try{
-                pst = cn.prepareStatement ("select mgt_username from management whare mgt_password = "+passwo); //selecting specific user from database
-                rs = pst.executeQuery();
-                
-                userpass = rs.getString("mgt_username");
-            }
-            catch(Exception e){
-             System.out.println(e);
-            } 
+    private void connect() {
+        try {
+            cn = Database.connect();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Could not connect to the database.\n\n"
+                    + "Make sure MySQL is running and that Database.java\n"
+                    + "holds the correct URL, user and password.\n\n"
+                    + e.getMessage(),
+                    "Database Error", JOptionPane.ERROR_MESSAGE);
         }
-        
-        return userpass;
+    }
+
+    private void login() {
+        String username = txtusername.getText().trim();
+        String password = txtmpwd.getText();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Please enter both username and password.",
+                    "Login", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (cn == null) {
+            connect();
+        }
+        if (cn == null) {
+            return;
+        }
+        try {
+            pst = cn.prepareStatement(
+                    "SELECT mgt_username, mgt_password FROM management WHERE mgt_username = ?");
+            pst.setString(1, username);
+            rs = pst.executeQuery();
+            if (rs.next() && password.equals(rs.getString("mgt_password"))) {
+                JOptionPane.showMessageDialog(this, "Login successful.");
+                dispose();
+                new AddTenant().setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Wrong username or password. Please try again.",
+                        "Login Failed", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Login error: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void clearrecords() {
+        txtusername.setText("");
+        txtmpwd.setText("");
     }
 }

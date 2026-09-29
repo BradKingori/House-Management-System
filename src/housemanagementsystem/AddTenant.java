@@ -1,10 +1,11 @@
 package housemanagementsystem;
 
 
-import java.sql.*;
-import java.util.ArrayList;
-import javax.swing.JOptionPane;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -20,19 +21,18 @@ public class AddTenant extends javax.swing.JFrame {
     Connection cn;
     PreparedStatement pst;
     ResultSet rs;
-    String status ="";
-    
-    
+
     /**
-     * 
-     * Creates new form NewJFrame
+     * Creates new form AddTenant
      */
-   
     public AddTenant() {
         initComponents();
-         myconnection();
-        
-        
+        ModernTheme.style(getContentPane());
+        setTitle("House Management System - Manager");
+        setSize(1200, 740);
+        setLocationRelativeTo(null);
+        connect();
+        jButton3.addActionListener(e -> addAnApartment());
     }
 
     /**
@@ -726,36 +726,7 @@ public class AddTenant extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddTenant.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddTenant.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddTenant.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddTenant.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-     
+        ModernTheme.apply();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -838,194 +809,198 @@ public class AddTenant extends javax.swing.JFrame {
     private javax.swing.JTextField txt_addAptNo;
     private javax.swing.JComboBox<String> txt_addAptType;
     // End of variables declaration//GEN-END:variables
- ArrayList<String> rents = new ArrayList<>();
-    private void myconnection() {
-        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    
-            try{
-                
-                cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartmentmanager","root",null);
-                
-             //   pst = cn.prepareStatement("Select * from RegistrationTest",ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-                
-            //    rs = pst.executeQuery();
-                //    queryForApartments();
-                JOptionPane.showMessageDialog(null, "Successfully Connected");
-//                JOptionPane.showMessageDialog(null ,"Welcome" + );
-                
-            //    queryForApartments();
-            }
-            catch(Exception e){
-                e.printStackTrace();
-            }
-    
-    }
-    private void addAnApartment(){
-    try{
-      pst = cn.prepareStatement("insert into apartment values (?,?,?,?,?,?)");
-      
-    pst.setString(1,txt_addAptNo.getText());
-    pst.setString(2, txt_addAptType.getSelectedItem().toString());
-  ////  pst.setString(3, phonenumber.getText());
-//    pst.setString(4, email.getText());
 
-
-  
-    pst.executeUpdate();
-     JOptionPane.showMessageDialog(null, "SIGN UP Successful");
-    
-   
-    
-    }catch(Exception e){
-        
-    }
-    
-}
-
-    private void SubmitTenantInfo() {
-   try{
-          cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartmentmanager","root",null);
-    //select  = cn.prepareStatement("SELECT * FROM `apartment` WHERE occupied = 'Not Occupied';");
-    pst = cn.prepareStatement("insert into tenant(t_id,t_name,t_phone, t_national_id,t_lease_length,t_password,apt_no) values (?,?,?,?,?,?,?)");
-      String pwd = "1234";
-    pst.setString(1,txtTenantNo.getText());
-  //  pst.setString(2,"1234");
-    pst.setString(2,txtTenantName.getText());
-    pst.setString(3,   txtTPhone.getText());
-    pst.setString(4,   txtNatID.getText());
-    
-    pst.setInt( 5,   Integer.parseInt(txtLeaseLength.getText()));
-    pst.setString(6,   pwd);
-    
-    String as = txtTenantApartment.getText();
-    pst.setString(7,   as);
-  //  pst.setString(8,   txtTenantAptType.getText());
- //   pst.setString(9,   txtTenantRent.getText());
- //   pst.setString(10,   txtTenantRent.getText());
-   
-    SubmitTenantInfo2();
-    pst.execute();
-    
-  
-    JOptionPane.showMessageDialog(null, "Tenant Successfully Added");
-    
-   
-    
-    }catch(Exception e){
-          e.printStackTrace();
-    }
-    }
-    
-       private void SubmitTenantInfo2() {
-   try{
-          cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartmentmanager","root",null);
-    //select  = cn.prepareStatement("SELECT * FROM `apartment` WHERE occupied = 'Not Occupied';");
-    
-          String sql = "UPDATE apartment SET occupied = ? WHERE apt_no = ?  ";
-         
-          String va = txtTenantApartment.getText();
-            // Prepare the statement with the update parameters
-          PreparedStatement pstmt = cn.prepareStatement(sql);
-          pstmt.setString(1,   "Occupied");
-          pstmt.setString(2,   va);
-          int rowsAffected = pstmt.executeUpdate();
-
-            if (rowsAffected > 0) {
-                JOptionPane.showMessageDialog(null, "Record updated successfully.");
-                clear();
-            } else {
-                JOptionPane.showMessageDialog(null, "No matching record found.");
-            }
- 
- 
-    pst.execute();
-       JOptionPane.showMessageDialog(null, "Tenant Successfully Added");
-    pst.close();
-   
-    
-    }catch(Exception e){
-          e.printStackTrace();
-    }
-    }
-    
-    
-    private void gettabledetails(){
-     DefaultTableModel model = (DefaultTableModel) jTableApt.getModel();
-    
-    int n = jTableApt.getSelectedRow();
-    txtTenantApartment.setText(model.getValueAt(n ,0).toString());
-    txtTenantRent.setText(model.getValueAt(n ,1).toString());
-    txtTenantAptType.setText(model.getValueAt(n ,2).toString());
-    }
- 
-    
-    private void clear() {
-       // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-       txtTenantNo.setText(null);
-       txtTenantName.setText(null);
-       txtTPhone.setText(null);    
-       txtNatID.setText(null);  
-       txtLeaseLength.setText(status);
-        checkandpoulatebox();
-     //  txtidnumber.setText(null);
-                  
-                  
-                  
+    private void connect() {
+        try {
+            cn = Database.connect();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Could not connect to the database.\n\n"
+                    + "Make sure MySQL is running and that Database.java\n"
+                    + "holds the correct URL, user and password.\n\n"
+                    + e.getMessage(),
+                    "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
-    private void updatevaluesontextField() {
-    //    Integer itemindex =  TenantComboBox.getSelectedIndex();
-      //  System.out.println(itemindex);
-        
-        
-        Object[] orent = rents.toArray();
-        
-      //  txtTenantRent.setText(orent[itemindex+1].toString());
-      //  String valuea = rents.get(itemindex).toString();
-       // txtTenantRent.setText(rents.get(itemindex).toString()); 
+    private void loadAvailableApartments() {
+        try {
+            pst = cn.prepareStatement(
+                    "SELECT apt_no, apt_type, rent, occupied FROM apartment WHERE occupied = 'Not Occupied'",
+                    ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            rs = pst.executeQuery();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Failed to load apartments: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void checkandpoulatebox() {
-       
-    
-        
-    // String tmp = (String)TenantAptNoComboBox.getSelectedItem();
-        String sql = "SELECT * FROM apartment WHERE occupied = 'Not Occupied'";
-        try
-        {
-             pst  = cn.prepareStatement(sql,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);           
-          //   pst.setString(1,tmp);
-             rs = pst.executeQuery();
-            
-        }
-        catch(Exception e){
-         e.printStackTrace();
-    } 
-    
+        loadAvailableApartments();
     }
-    
- private void displayallrecords() {
-        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    try {
-        checkandpoulatebox();
+
+    private void displayallrecords() {
+        if (cn == null) {
+            connect();
+        }
+        if (cn == null) {
+            return;
+        }
+        loadAvailableApartments();
         DefaultTableModel model = (DefaultTableModel) jTableApt.getModel();
-    
-        if(model.getRowCount() > 0){
-            model.setRowCount(0);
-        }
-        else{
-        while(rs.next())
-                {
-                    String mydata[] = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4)};
-                    model.addRow(mydata);
+        model.setRowCount(0);
+        try {
+            if (rs != null) {
+                while (rs.next()) {
+                    model.addRow(new Object[]{
+                        rs.getString("apt_no"),
+                        rs.getString("apt_type"),
+                        rs.getString("rent"),
+                        rs.getString("occupied")
+                    });
                 }
-        
-        }
-        
-        }
-    catch(Exception e){
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-    
+    }
+
+    private void gettabledetails() {
+        DefaultTableModel model = (DefaultTableModel) jTableApt.getModel();
+        int n = jTableApt.getSelectedRow();
+        if (n < 0 || n >= model.getRowCount()) {
+            return;
+        }
+        txtTenantApartment.setText(model.getValueAt(n, 0).toString()); // APT NUMBER
+        txtTenantRent.setText(model.getValueAt(n, 2).toString());      // RENT
+        txtTenantAptType.setText(model.getValueAt(n, 1).toString());   // APT TYPE
+    }
+
+    private void clear() {
+        txtTenantNo.setText("");
+        txtTenantName.setText("");
+        txtTPhone.setText("");
+        txtNatID.setText("");
+        txtLeaseLength.setText("");
+        txtTenantApartment.setText("");
+        txtTenantRent.setText("");
+        txtTenantAptType.setText("");
+        displayallrecords();
+    }
+
+    private void addAnApartment() {
+        String aptNo = txt_addAptNo.getText().trim();
+        String aptType = txt_addAptType.getSelectedItem() == null
+                ? "" : txt_addAptType.getSelectedItem().toString();
+        String rentText = jTextField8.getText().trim();
+
+        if (aptNo.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Please enter an apartment number.",
+                    "Add Apartment", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        int rent;
+        try {
+            rent = Integer.parseInt(rentText);
+        } catch (NumberFormatException ex) {
+            rent = 0;
+        }
+        if (cn == null) {
+            connect();
+        }
+        if (cn == null) {
+            return;
+        }
+        try {
+            pst = cn.prepareStatement(
+                    "INSERT INTO apartment (apt_no, apt_type, rent, occupied) VALUES (?,?,?,?)");
+            pst.setString(1, aptNo);
+            pst.setString(2, aptType);
+            pst.setInt(3, rent);
+            pst.setString(4, "Not Occupied");
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Apartment added successfully.");
+            txt_addAptNo.setText("");
+            jTextField8.setText("");
+            displayallrecords();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Failed to add apartment: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void SubmitTenantInfo() {
+        String tenantNo = txtTenantNo.getText().trim();
+        String tenantName = txtTenantName.getText().trim();
+        String apartmentNo = txtTenantApartment.getText().trim();
+
+        if (tenantNo.isEmpty() || tenantName.isEmpty() || apartmentNo.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Please fill in Tenant No, Name and Apartment.",
+                    "Add Tenant", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        int leaseLength;
+        try {
+            leaseLength = Integer.parseInt(txtLeaseLength.getText().trim());
+        } catch (NumberFormatException ex) {
+            leaseLength = 0;
+        }
+        int rent;
+        try {
+            rent = Integer.parseInt(txtTenantRent.getText().trim());
+        } catch (NumberFormatException ex) {
+            rent = 0;
+        }
+        if (cn == null) {
+            connect();
+        }
+        if (cn == null) {
+            return;
+        }
+        try {
+            cn.setAutoCommit(false);
+            pst = cn.prepareStatement(
+                    "INSERT INTO tenant "
+                    + "(t_id, t_password, t_name, t_phone, t_national_id, t_lease_length, apt_no, apt_type, rent) "
+                    + "VALUES (?,?,?,?,?,?,?,?,?)");
+            pst.setString(1, tenantNo);
+            pst.setString(2, "1234");
+            pst.setString(3, tenantName);
+            pst.setString(4, txtTPhone.getText().trim());
+            pst.setString(5, txtNatID.getText().trim());
+            pst.setInt(6, leaseLength);
+            pst.setString(7, apartmentNo);
+            pst.setString(8, txtTenantAptType.getText().trim());
+            pst.setInt(9, rent);
+            pst.executeUpdate();
+
+            PreparedStatement update = cn.prepareStatement(
+                    "UPDATE apartment SET occupied = ? WHERE apt_no = ?");
+            update.setString(1, "Occupied");
+            update.setString(2, apartmentNo);
+            update.executeUpdate();
+
+            cn.commit();
+            cn.setAutoCommit(true);
+            JOptionPane.showMessageDialog(this, "Tenant successfully added.");
+            clear();
+        } catch (SQLException e) {
+            try {
+                cn.rollback();
+            } catch (SQLException ignore) {
+            }
+            try {
+                cn.setAutoCommit(true);
+            } catch (SQLException ignore) {
+            }
+            JOptionPane.showMessageDialog(this,
+                    "Failed to add tenant: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }
+

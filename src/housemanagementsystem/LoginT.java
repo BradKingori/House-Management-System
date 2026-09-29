@@ -5,12 +5,14 @@
 
 
 
-import java.awt.List;
-import java.sql.*;
-import java.util.ArrayList;
-import javax.swing.JOptionPane;
+package housemanagementsystem;
+
 import java.sql.Connection;
-/*
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author ADMIN
@@ -20,16 +22,19 @@ public class LoginT extends javax.swing.JFrame {
     /**
      * Creates new form LoginT
      */
-    
-     Connection cn;
+    Connection cn;
     PreparedStatement pst;
     ResultSet rs;
-    
-    
+
     public LoginT() {
         initComponents();
-        
-           myconnection();
+        ModernTheme.style(getContentPane());
+        setTitle("Tenant Login");
+        setSize(400, 320);
+        setLocationRelativeTo(null);
+        setResizable(false);
+        connect();
+        jButton1.addActionListener(e -> login());
     }
 
     /**
@@ -117,29 +122,7 @@ public class LoginT extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LoginT.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LoginT.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LoginT.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LoginT.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
+        ModernTheme.apply();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -157,20 +140,51 @@ public class LoginT extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 
-   private void myconnection() {
-        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    
-            try{
-                cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartmentmanager","root",null);
-                
-        
-                JOptionPane.showMessageDialog(null, "Successfully Connected");
-                
-            //    queryForApartments();
+    private void connect() {
+        try {
+            cn = Database.connect();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Could not connect to the database.\n\n"
+                    + "Make sure MySQL is running and that Database.java\n"
+                    + "holds the correct URL, user and password.\n\n"
+                    + e.getMessage(),
+                    "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void login() {
+        String id = jTextField1.getText().trim();
+        String password = jTextField2.getText();
+
+        if (id.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Please enter both ID and password.",
+                    "Login", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (cn == null) {
+            connect();
+        }
+        if (cn == null) {
+            return;
+        }
+        try {
+            pst = cn.prepareStatement(
+                    "SELECT t_id, t_password FROM tenant WHERE t_id = ?");
+            pst.setString(1, id);
+            rs = pst.executeQuery();
+            if (rs.next() && password.equals(rs.getString("t_password"))) {
+                JOptionPane.showMessageDialog(this, "Tenant login successful.");
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Wrong ID or password. Please try again.",
+                        "Login Failed", JOptionPane.ERROR_MESSAGE);
             }
-            catch(Exception e){
-                e.printStackTrace();
-            }
-    
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Login error: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

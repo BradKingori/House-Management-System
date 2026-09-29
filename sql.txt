@@ -1,53 +1,56 @@
+-- ============================================================
+-- House Management System - Database Schema
+-- Run this script in MySQL Workbench (or the mysql CLI) to create
+-- the database and its tables before running the application.
+-- ============================================================
+
+CREATE DATABASE IF NOT EXISTS apartmentmanager;
+USE apartmentmanager;
+
 CREATE TABLE apartment (
-    apt_no varchar(50),
-    apt_type varchar(50),
-    rent int(50),
-    occupied varchar(50),
-    PRIMARY KEY (apt_no)
+    apt_no   VARCHAR(50) PRIMARY KEY,
+    apt_type VARCHAR(50),
+    rent     INT,
+    occupied VARCHAR(50)
 );
 
-
 CREATE TABLE management (
-    mgt_id varchar(50),
-    mgt_username varchar(50),
-    mgt_password varchar(50),
-    PRIMARY KEY (mgt_id)
+    mgt_id       VARCHAR(50) PRIMARY KEY,
+    mgt_username VARCHAR(50),
+    mgt_password VARCHAR(50)
 );
 
 CREATE TABLE tenant (
-	t_id varchar(50),
-    t_password varchar(50),
-    t_name varchar(50),
-    t_phone varchar(50),
-    t_national_id varchar(50),
-    t_lease_length int(50),
-    apt_no varchar(50),
-    apt_type varchar(50),
-    t_arrear varchar(50),
-    rent int(50),
-    PRIMARY KEY (t_id),
-    FOREIGN KEY (apt_no) REFERENCES apartments(apt_no)
+    t_id           VARCHAR(50) PRIMARY KEY,
+    t_password     VARCHAR(50),
+    t_name         VARCHAR(50),
+    t_phone        VARCHAR(50),
+    t_national_id  VARCHAR(50),
+    t_lease_length INT,
+    apt_no         VARCHAR(50),
+    apt_type       VARCHAR(50),
+    t_arrear       VARCHAR(50),
+    rent           INT,
+    FOREIGN KEY (apt_no) REFERENCES apartment(apt_no)
 );
 
-
 CREATE TABLE rent (
-	r_date date,
-    t_id varchar(50),
-    apt_no varchar(50),
-    r_payment_method varchar(50),
-    t_arrear varchar(50),
-    rent int(50),
-    PRIMARY KEY (r_date),
+    r_id             INT AUTO_INCREMENT PRIMARY KEY,
+    r_date           DATE,
+    t_id             VARCHAR(50),
+    apt_no           VARCHAR(50),
+    r_payment_method VARCHAR(50),
+    t_arrear         VARCHAR(50),
+    rent             INT,
     FOREIGN KEY (t_id) REFERENCES tenant(t_id)
 );
 
 CREATE TABLE complaints (
-	c_no varchar(50),
-    apt_no varchar(50),
-    t_id varchar(50),
-    c_type varchar(50),
-    c_text varchar(250),
-    c_status varchar(50),
-    PRIMARY KEY (c_no),
+    c_no     VARCHAR(50) PRIMARY KEY,
+    apt_no   VARCHAR(50),
+    t_id     VARCHAR(50),
+    c_type   VARCHAR(50),
+    c_text   VARCHAR(250),
+    c_status VARCHAR(50),
     FOREIGN KEY (t_id) REFERENCES tenant(t_id)
 );

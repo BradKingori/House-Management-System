@@ -1,14 +1,11 @@
 
+package housemanagementsystem;
+
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
-
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 
 /**
  *
@@ -19,14 +16,18 @@ public class SignupM extends javax.swing.JFrame {
     /**
      * Creates new form SignupM
      */
-    
-       Connection cn;
+    Connection cn;
     PreparedStatement pst;
     ResultSet rs;
-    
+
     public SignupM() {
         initComponents();
-        myconnection();
+        ModernTheme.style(getContentPane());
+        setTitle("Manager Sign Up");
+        setSize(420, 430);
+        setLocationRelativeTo(null);
+        setResizable(false);
+        connect();
     }
 
     /**
@@ -194,29 +195,7 @@ public class SignupM extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SignupM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SignupM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SignupM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SignupM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
+        ModernTheme.apply();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -241,70 +220,65 @@ public class SignupM extends javax.swing.JFrame {
     private javax.swing.JTextField txtmusername;
     // End of variables declaration//GEN-END:variables
 
-
-private void myconnection() {
-        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    
-            try{
-                cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartmentmanager","root",null);
-                
-        
-                JOptionPane.showMessageDialog(null, "Successfully Connected");
-                
-            //    queryForApartments();
-            }
-            catch(Exception e){
-                e.printStackTrace();
-            }
-    
+    private void connect() {
+        try {
+            cn = Database.connect();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Could not connect to the database.\n\n"
+                    + "Make sure MySQL is running and that Database.java\n"
+                    + "holds the correct URL, user and password.\n\n"
+                    + e.getMessage(),
+                    "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
-private void insertrecords() {
-    try{
+    private void insertrecords() {
+        String userId = txtmuserid.getText().trim();
+        String username = txtmusername.getText().trim();
         String pwd1 = txtmpwd.getText();
         String pwd2 = txtmpwdconfirm.getText();
-        if(!(pwd1.equals(pwd2)))
-                {
-                
-                  JOptionPane.showMessageDialog(null,"Passwords do not match ");
-                }
-        else{
-            
-                  pst = cn.prepareStatement("Insert into management values(?,?,?)");
-      
-                  pst.setString(1,txtmuserid.getText());
-                  pst.setString(2,txtmusername.getText());
-                  pst.setString(3, txtmpwd.getText());
-            
+
+        if (userId.isEmpty() || username.isEmpty() || pwd1.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Please fill in all fields.",
+                    "Sign Up", JOptionPane.WARNING_MESSAGE);
+            return;
         }
-        
-   
- //   pst.setString(4, chefpassword.getPassword().toString());//im not sure if setting the password as an object is correct, was getting an error when I set it as String
-   // pst.setString(5, chefconfirmpassword.getPassword().toString());
-
-   
-   
-  
-    pst.executeUpdate();
-     JOptionPane.showMessageDialog(null, "SIGN UP Successful");
-    
-    clearrecords();
-   //include code to take me to new tab, ie. home 
-
+        if (!pwd1.equals(pwd2)) {
+            JOptionPane.showMessageDialog(this,
+                    "Passwords do not match.",
+                    "Sign Up", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (cn == null) {
+            connect();
+        }
+        if (cn == null) {
+            return;
+        }
+        try {
+            pst = cn.prepareStatement(
+                    "INSERT INTO management (mgt_id, mgt_username, mgt_password) VALUES (?,?,?)");
+            pst.setString(1, userId);
+            pst.setString(2, username);
+            pst.setString(3, pwd1);
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Sign up successful. You can now log in.");
+            clearrecords();
+            dispose();
+            new LoginM().setVisible(true);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Sign up failed: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
-    catch(Exception e){
-        System.out.println(e);
-}
-}
-
-private void clearrecords() {
-      
-       txtmuserid.setText(null);
-       txtmpwd.setText(null);
-       txtmusername.setText(null);
-       txtmpwdconfirm.setText(null);
+    private void clearrecords() {
+        txtmuserid.setText("");
+        txtmpwd.setText("");
+        txtmusername.setText("");
+        txtmpwdconfirm.setText("");
     }
-    
-
 }
